@@ -1,85 +1,103 @@
-// Import package Flutter bawaan untuk membangun UI Material Design
+// Import package Flutter Material Design
 import 'package:flutter/material.dart';
 
 // Fungsi utama yang menjalankan aplikasi
 void main() {
-  runApp(const MyApp()); // Menjalankan widget MyApp sebagai root aplikasi
+  runApp(const MyApp()); // Menjalankan widget utama MyApp
 }
 
-// Widget utama aplikasi
+// Widget utama dari aplikasi
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Daftar Pegawai Bakery', // Judul aplikasi
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ), // Tema utama aplikasi (warna pink)
-      home:
-          const BakeryStaffPage(), // Menampilkan halaman utama BakeryStaffPage
-    );
-  }
-}
+      title: 'Golden Retriever Info', // Judul aplikasi
+      debugShowCheckedModeBanner:
+          false, // Menyembunyikan banner debug di pojok kanan atas
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200, // Warna latar belakang aplikasi
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0), // Padding di sekeliling card
+            child: Card(
+              elevation: 4, // Memberikan bayangan pada card
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  16,
+                ), // Membuat sudut card menjadi membulat
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Tinggi card menyesuaikan isi
+                children: [
+                  // Widget gambar bagian atas card
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16), // Membulatkan sudut atas gambar
+                    ),
+                    child: Image.network(
+                      // Gambar Golden Retriever dari URL
+                      'https://asset.kompas.com/crops/679gLLzMfIbhta9BZCH5Px5vLmU=/36x0:973x625/1200x800/data/photo/2022/08/14/62f8251bc720e.jpg',
+                      fit:
+                          BoxFit
+                              .cover, // Menutupi seluruh area dengan proporsional
+                      height: 200, // 🔍 Gambar diperbesar ke tinggi 480
+                      width: double.infinity,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Jika gambar gagal dimuat, tampilkan placeholder
+                        return Container(
+                          height: 180,
+                          color: Colors.grey,
+                          child: const Center(
+                            child: Text('Gambar gagal dimuat'),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
 
-// Widget statis untuk halaman daftar pegawai bakery
-class BakeryStaffPage extends StatelessWidget {
-  const BakeryStaffPage({super.key}); 
+                  // Bagian isi teks di dalam card
+                  Padding(
+                    padding: const EdgeInsets.all(
+                      16.0,
+                    ), // Padding di dalam card
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Tanggal dan waktu
+                        const Text(
+                          '24 April 2025, 10:00 WIB',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                        const SizedBox(height: 8),
 
-  // Daftar data pegawai bakery, terdiri dari nama dan pekerjaan
-  final List<Map<String, String>> pegawaiBakery = const [
-    {"nama": "Arlin", "pekerjaan": "Pembuat Roti"},
-    {"nama": "Adela", "pekerjaan": "Kasir"},
-    {"nama": "Yoga", "pekerjaan": "Pengantar Pesanan"},
-    {"nama": "Karina", "pekerjaan": "Dekorasi Kue"},
-    {"nama": "Monic", "pekerjaan": "Barista"},
-    {"nama": "Kaluna", "pekerjaan": "Manajer Toko"},
-  ];
+                        // Judul informasi
+                        const Text(
+                          'Mengenal Golden Retriever Lebih Dekat!',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('List Pegawai Bakery'),
-      ), // Judul di bagian atas
-      body: ListView.builder(
-        itemCount:
-            pegawaiBakery.length, // Jumlah item berdasarkan jumlah data pegawai
-        itemBuilder: (context, index) {
-          final nama = pegawaiBakery[index]['nama']!; // Mengambil nama pegawai
-          final pekerjaan =
-              pegawaiBakery[index]['pekerjaan']!; // Mengambil pekerjaan
-          final inisial = getInisial(nama); // Mendapatkan inisial dari nama
-
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.pink, // Warna latar avatar
-              child: Text(
-                inisial,
-                style: const TextStyle(color: Colors.white),
-              ), // Teks inisial
+                        // Paragraf penjelasan tentang anjing Golden Retriever
+                        const Text(
+                          'Golden Retriever adalah anjing yang cerdas, bersahabat, dan sangat cocok menjadi sahabat keluarga. '
+                          'Dengan bulunya yang keemasan dan sifatnya yang lembut, anjing ini tidak hanya menawan tapi juga setia. '
+                          'Yuk, kenali lebih jauh karakter dan cara merawat Golden Retriever tanpa repot!',
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            title: Text(
-              nama,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ), // Nama pegawai dengan huruf tebal
-            ),
-            subtitle: Text(pekerjaan), // Pekerjaan pegawai sebagai subtitle
-          );
-        },
+          ),
+        ),
       ),
     );
-  }
-
-  // Fungsi untuk mengambil inisial dari nama (2 huruf pertama atau dari dua kata)
-  String getInisial(String nama) {
-    List<String> kata = nama.split(" ");
-    if (kata.length >= 2) {
-      return kata[0][0].toUpperCase() + kata[1][0].toUpperCase();
-    } else {
-      return nama.substring(0, 2).toUpperCase();
-    }
   }
 }
